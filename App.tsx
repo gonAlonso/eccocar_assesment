@@ -5,6 +5,8 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
+import FlatListCarousel from "./components/ListCarousel";
+
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
@@ -14,7 +16,13 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
+        <FlatListCarousel/>
+      </SafeAreaProvider>
+    );
+    return (
+      <SafeAreaProvider>
+        //<Navigation colorScheme={colorScheme} />
+        <FlatListCarousel/>
         <StatusBar />
       </SafeAreaProvider>
     );

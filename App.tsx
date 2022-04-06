@@ -1,34 +1,45 @@
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react';
+import {StyleSheet, StatusBar } from 'react-native'
 
 import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
 
-import ListCarousel from "./components/ListCarousel";
-import DetailScreen from "./screens/DetailScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-//const customData = require('./Data.json');
-const customData = require('./Data_marvel.json');
 
-//global.data = customData
-/*
-global.config = {
-  baseUrl: "https://gateway.marvel.com",
-  topic: "/v1/public/characters",
-  pubkey: "1a060481f3af6a9bfdf0b5960d25b6d9",
-  privkey: "83df4475ebf7cbc494b78df907a495b28421ab19"
-}*/
+import DetailsScreen from './screens/DetailScreen'
+import HomeScreen from './screens/Home';
+import ItemView from './components/ItemView';
+
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <ListCarousel items={customData.data.items}/> 
-      </SafeAreaProvider>
+      <HomeScreen/>
+    )
+
+    return (
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home" >
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Details" component={ItemView} />
+        </Stack.Navigator>
+    </NavigationContainer>
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+    overflow: 'scroll',
+  }
+});
